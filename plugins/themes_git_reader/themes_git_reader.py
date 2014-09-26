@@ -1,7 +1,9 @@
 import os, sys
 import logging
+import string
 from glob import glob
 from pelican import signals
+from pelican.contents import Article, Static
 #from pelican.readers import MarkdownReader, RstReader, Readers
 
 logger = logging.getLogger(__name__)
@@ -24,6 +26,18 @@ def find_images(Folder, FileEndings):
 def find_title(File): #stub
     return File
 
+def get_last_modified(GitFolder, Folder):
+    StartingDir = os.getcwd()
+    os.chdir(GitFolder)
+    Date = str(git.log("-n1", "--format='%ai'", "--", Folder))
+    Date = Date.split("'")[1]
+    os.chdir(StartingDir)
+    return Date
+
+def get_category():
+    #could be extended to check if theme got updated, or is new theme
+    return "theme"
+    
 def generate_json_url(Settings, Folder):
     return "{0}/{1}/{2}.json".format(
                         Settings['SITEURL'],
@@ -34,12 +48,14 @@ def generate_json_url(Settings, Folder):
 def crawl_themes(Settings):
     Themes = []
     for Folder in os.listdir(Settings['GIT_DIR']):
-        CurrentDir = os.path.join(Settings['GIT_DIR'], Folder)
-        if os.path.isdir(CurrentDir):
+        PrefixedDir = os.path.join(Settings['GIT_DIR'], Folder)
+        if os.path.isdir(PrefixedDir) and Folder!='.git':
             Theme = {}
-            Theme['images'] = find_images(CurrentDir, Settings['IMAGE_FILE_ENDINGS'])
+            Theme['images'] = find_images(PrefixedDir, Settings['IMAGE_FILE_ENDINGS'])
             Theme['title'] = find_title(Folder)
-            Theme['json_url'] = generate_json_url(Settings, Folder)
+            Theme['date'] = get_last_modified(Settings['GIT_DIR'], Folder)
+            Theme['category'] = get_category()
+            Theme['json_url'] = generate_json_url(Settings, Theme['title'])
             #todo extract more info from readme's, use pelicans readers?
             Themes = [Theme] + Themes
     return Themes
@@ -89,8 +105,13 @@ def generate_articles(context):
         print(repr(theme))
         input()
 
+def test(static_generator):
+    print("static generator init")
 
 def register():
     signals.initialized.connect(pelican_initialized)
     signals.article_generator_init.connect(initialize)
+    
+    #might need to move to new signal, before static generator runs
     signals.article_generator_finalized.connect(generate_articles)
+    signals.static_generator_init.connect(test)
