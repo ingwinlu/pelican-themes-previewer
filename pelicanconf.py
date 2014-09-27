@@ -17,6 +17,8 @@ DEFAULT_DATE = 'fs'
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
+AUTHOR_FEED_ATOM = None
+AUTHOR_FEED_RSS = None
 
 DEFAULT_PAGINATION = 1
 
@@ -27,6 +29,12 @@ PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["themes_git_reader"] #enter git reader/parser here
 
 THEME = "theme"
-DIRECT_TEMPLATES = ('index','article',)
 BOOTSTRAP_THEME = 'paper'
 PYGMENTS_STYLE = 'colorful'
+
+
+DIRECT_TEMPLATES = ('index',)
+ARTICLE_URL = 'themes/{slug}/'
+ARTICLE_SAVE_AS = 'themes/{slug}/index.html'
+AUTHOR_SAVE_AS = ''
+CATEGORY_SAVE_AS = ''
