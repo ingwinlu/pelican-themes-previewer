@@ -53,7 +53,7 @@ def crawl_themes(Settings):
     Themes = []
     for Folder in os.listdir(Settings['GIT_DIR']):
         PrefixedDir = os.path.join(Settings['GIT_DIR'], Folder)
-        if os.path.isdir(PrefixedDir) and Folder!='.git':
+        if os.path.isdir(PrefixedDir) and not Folder in Settings['EXCLUDE_GIT_DIRS']:
             Theme = {}
             Theme['images'] = find_images(PrefixedDir, Settings['IMAGE_FILE_ENDINGS'])
             Theme['title'] = find_title(Folder)
@@ -92,6 +92,7 @@ def initialize(Pelican):
     DEFAULT_CONFIG.setdefault('IMAGE_FILE_ENDINGS',
         ['*.png', '*.PNG', '*.jpg', '*.JPG'])
     DEFAULT_CONFIG.setdefault('JSON_OUT', 'json')
+    DEFAULT_CONFIG.setdefault('EXCLUDE_GIT_DIRS', ['.git', 'pelicanthemes-generator'])
     if Pelican:
         Pelican.settings.setdefault('GIT_URL',
             'https://github.com/getpelican/pelican-themes.git')
@@ -101,6 +102,7 @@ def initialize(Pelican):
         Pelican.settings.setdefault('IMAGE_FILE_ENDINGS',
             ['*.png', '*.PNG', '*.jpg', '*.JPG'])
         Pelican.settings.setdefault('JSON_OUT', 'json')
+        Pelican.settings.setdefault('EXCLUDE_GIT_DIRS', ['.git', 'pelicanthemes-generator'])
         init_git(Pelican)
         global Themes
         Themes = crawl_themes(Pelican.settings)
@@ -124,6 +126,5 @@ def add_static_to_static_list(static_generator):
 
 def register():
     signals.initialized.connect(initialize)
-    #might need to move to new signal, before static generator runs
     signals.article_generator_pretaxonomy.connect(add_articles_to_article_list)
     signals.static_generator_init.connect(add_static_to_static_list)
