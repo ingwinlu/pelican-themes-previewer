@@ -9,9 +9,9 @@
     </div>
     {% endif %}
     <section id="content">
+        {% include "include/pagination.html" %}
         {% for article in (articles_page.object_list if articles_page else articles) %}
             {% include "include/article_section.html" %}
         {% endfor %}
-        {% include "include/pagination.html" %}
     </section>
 {% endblock  %}
