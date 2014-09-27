@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = 'pelican'
 SITENAME = 'pelican-themes'
 SITEURL = 'http://dev.heroicdebugging.biz'
+SITEDESCRIPTION = 'Preview all currently available Pelican Themes'
 
 PATH = 'content'
 
@@ -25,6 +26,8 @@ DEFAULT_PAGINATION = 1
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
+DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%m'
+
 PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["themes_git_reader"]
 
@@ -39,4 +42,4 @@ ARTICLE_SAVE_AS = 'themes/{slug}/index.html'
 AUTHOR_SAVE_AS = ''
 CATEGORY_SAVE_AS = ''
 
-GIT_UPDATE = True
+GIT_UPDATE = False
