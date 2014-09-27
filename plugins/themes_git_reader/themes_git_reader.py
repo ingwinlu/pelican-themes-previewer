@@ -24,7 +24,13 @@ def find_images(Folder, FileEndings):
     Images = []
     for FileEnding in FileEndings:
         Images = glob(os.path.join(Folder, FileEnding)) + Images
-    return Images
+    ImageList = []
+    for Image in Images:
+        ImageDict = {}
+        ImageDict['dest'] = Image
+        ImageDict['src'] = os.path.abspath(Image)
+        ImageList = [ImageDict] + ImageList
+    return ImageList
 
 def find_title(File): #stub
     return File
@@ -86,6 +92,7 @@ def init_git(Pelican):
 ########
 def initialize(Pelican):
     from pelican.settings import DEFAULT_CONFIG
+    DEFAULT_CONFIG.setdefault('GIT_UPDATE', True)
     DEFAULT_CONFIG.setdefault('GIT_URL',
         'https://github.com/getpelican/pelican-themes.git')
     DEFAULT_CONFIG.setdefault('GIT_DIR', 'git_input')
@@ -94,6 +101,7 @@ def initialize(Pelican):
     DEFAULT_CONFIG.setdefault('JSON_OUT', 'json')
     DEFAULT_CONFIG.setdefault('EXCLUDE_GIT_DIRS', ['.git', 'pelicanthemes-generator'])
     if Pelican:
+        Pelican.settings.setdefault('GIT_UPDATE', True)
         Pelican.settings.setdefault('GIT_URL',
             'https://github.com/getpelican/pelican-themes.git')
         Pelican.settings.setdefault('GIT_DIR', 'git_input')
@@ -103,7 +111,10 @@ def initialize(Pelican):
             ['*.png', '*.PNG', '*.jpg', '*.JPG'])
         Pelican.settings.setdefault('JSON_OUT', 'json')
         Pelican.settings.setdefault('EXCLUDE_GIT_DIRS', ['.git', 'pelicanthemes-generator'])
-        init_git(Pelican)
+        if Pelican.settings['GIT_UPDATE']:
+            init_git(Pelican)
+        else:
+            logger.debug("skip git update")
         global Themes
         Themes = crawl_themes(Pelican.settings)
 
@@ -122,9 +133,15 @@ def add_articles_to_article_list(article_generator):
 
 def add_static_to_static_list(static_generator):
     logger.debug('add_static_to_static_list')
-    pass
+    global Themes
+    for Theme in Themes:
+        for Image in Theme['images']:
+            StaticImage = Static(content='', metadata={'save_as' : Image['dest']}, source_path=Image['src'])
+            static_generator.staticfiles.append(StaticImage)
+            static_generator.add_source_path(StaticImage)
+    static_generator._update_context(('staticfiles',))
 
 def register():
     signals.initialized.connect(initialize)
     signals.article_generator_pretaxonomy.connect(add_articles_to_article_list)
-    signals.static_generator_init.connect(add_static_to_static_list)
+    signals.static_generator_finalized.connect(add_static_to_static_list)

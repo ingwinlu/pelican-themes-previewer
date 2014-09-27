@@ -26,7 +26,7 @@ DEFAULT_PAGINATION = 1
 #RELATIVE_URLS = True
 
 PLUGIN_PATHS = ["plugins"]
-PLUGINS = ["themes_git_reader"] #enter git reader/parser here
+PLUGINS = ["themes_git_reader"]
 
 THEME = "theme"
 BOOTSTRAP_THEME = 'paper'
@@ -38,3 +38,5 @@ ARTICLE_URL = 'themes/{slug}/'
 ARTICLE_SAVE_AS = 'themes/{slug}/index.html'
 AUTHOR_SAVE_AS = ''
 CATEGORY_SAVE_AS = ''
+
+GIT_UPDATE = True
