@@ -3,5 +3,5 @@
 {% block title %}{{ article.title|striptags }} - {{ SITENAME }}{% endblock %}
 
 {% block content %}
-    <p>{{article.title}}</p>
+    {% include "include/article_section.html" %}
 {% endblock  %}

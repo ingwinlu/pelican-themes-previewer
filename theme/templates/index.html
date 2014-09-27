@@ -1,23 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section id="intro">
-        <h1>maybe jumbotron with welcome message</h1>
-        <h2>Themelist</h2>
-    </section>
+    {% if output_file == "index.html" %}
+    <div id="intro" class="jumbotron">
+        <div class="container">
+            <h1>jumbotron with welcome message</h1>
+        </div>
+    </div>
+    {% endif %}
     <section id="content">
-        <article class="articletheme">
-            <h3>themename <small>category and tag information</small></h3>
-            <div class="description">themedescription</div>
-            
-        </article>
+        {% for article in (articles_page.object_list if articles_page else articles) %}
+            {% include "include/article_section.html" %}
+        {% endfor %}
+        {% include "include/pagination.html" %}
     </section>
-    <section id="content">
-        <article class="articletheme">
-            <h3>themename2 <small>category and tag information2</small></h3>
-            <div class="description">themedescription2</div>
-            
-        </article>
-    </section>
-    <!-- include pagination -->
 {% endblock  %}
