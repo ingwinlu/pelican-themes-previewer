@@ -14,10 +14,38 @@
     </h3>
     <div class="description">themedescription</div>
     {% if article.images %}
-    <div class="pictures">
-        {% for image in article.images %}
-        <img class="img-responsive img-thumbnail" src="{{SITEURL}}/{{image['dest']}}"/>
-        {% endfor %}
-    </div>
+        {% if article.images|length>1 %}
+            <div class="img-thumbnail">
+                <div id="carousel-{{article.title}}" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        {% for image in article.images %}
+                            <li data-target="#carousel-{{article.title}}" data-slide-to="{{loop.index0}}" class="{% if loop.first %}active{%endif%}"></li>
+                        {% endfor %}
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                      {% for image in article.images %}
+                        <div class="item {% if loop.first %}active{%endif%}">
+                            <img src="{{SITEURL}}/{{image['dest']}}"/>
+                        </div>
+                      {% endfor %}
+                    </div>
+
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#carousel-{{article.title}}" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-{{article.title}}" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            {% for image in article.images %}
+            <img class="img-responsive img-thumbnail" src="{{SITEURL}}/{{image['dest']}}"/>
+            {% endfor %}
+        {% endif %}
     {% endif %}
 </article>

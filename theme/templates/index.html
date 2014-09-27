@@ -4,7 +4,9 @@
     {% if output_file == "index.html" %}
     <div id="intro" class="jumbotron">
         <div class="container">
-            <h1>jumbotron with welcome message</h1>
+            <h1>{{SITENAME}}</h1>
+            <p>{{SITEDESCRIPTION}}</p>
+            <p><a href="{{GIT_URL}}" class="btn btn-primary">pelican-themes Repository</a></p>
         </div>
     </div>
     {% endif %}
