@@ -27,6 +27,6 @@ PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["themes_git_reader"] #enter git reader/parser here
 
 THEME = "theme"
-DIRECT_TEMPLATES = ('index',)
+DIRECT_TEMPLATES = ('index','article',)
 BOOTSTRAP_THEME = 'paper'
 PYGMENTS_STYLE = 'colorful'
