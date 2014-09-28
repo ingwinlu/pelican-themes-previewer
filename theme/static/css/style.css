@@ -12,6 +12,5 @@ body {
 }
 
 .carousel-control > span{
-    background-color: #999;
-    background-color: rgba(70,70,70,.25);
+    color: #2196f3;
 }

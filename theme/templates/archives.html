@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="content">
+    <div class="row">
+        <div class="list-group">
+        {% for theme in articles|sort(attribute='title') %}
+            <div class="col-md-6">
+                <a href="{{SITEURL}}/{{theme.url}}" class="list-group-item theme-list-item">
+                    {{theme.title}}
+                </a>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock  %}
