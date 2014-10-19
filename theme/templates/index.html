@@ -15,5 +15,10 @@
             {% include "include/article_section.html" %}
         {% endfor %}
         {% include "include/pagination.html" %}
+        <div id="next" current="{{output_file}}"></div>
     </section>
 {% endblock  %}
+
+{% block scripts %}
+<script src="{{SITEURL}}/theme/js/pelicanthemespreviewer.js"></script>
+{% endblock%}
