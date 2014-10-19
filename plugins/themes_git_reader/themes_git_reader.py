@@ -35,10 +35,10 @@ def find_images(Folder, FileEndings):
 def find_title(File): #stub
     return File
 
-def get_last_modified(GitFolder, Folder):
+def get_last_modified(GitFolder, ThemeFolder):
     StartingDir = os.getcwd()
     os.chdir(GitFolder)
-    Date = str(git.log("-n1", "--format='%ai'", "--", Folder))
+    Date = str(git.log("-n1", "--format='%ai'", "--", ThemeFolder))
     Date = Date.split("'")[1]
     Date = get_date(Date)
     os.chdir(StartingDir)
